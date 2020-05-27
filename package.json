@@ -1,0 +1,26 @@
+{
+  "name": "api-googlesheet-slack",
+  "version": "0.0.1",
+  "private": false,
+  "description": "API permettant d'envoyer sur slack des messages venant de googleSheet ",
+  "author": "MelanieMEB",
+  "license": "ISC",
+  "engines": {
+    "node": "12.14.1",
+    "npm": "6.13.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MelanieMEB/api-googlesheet-slack.git"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1"
+  }
+}
