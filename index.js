@@ -1,12 +1,11 @@
 const Hapi = require('@hapi/hapi');   // Import de Hapi
-const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 const host = process.env.h
 
 const init = async () => {
 
     // Initialisation d'un nouveau serveur Hapi avec sa configuration
-    const server = Hapi.server({ port, host });
+    const server = Hapi.server({ port });
 
     // Création d'une route GET, que l'on pourra appelé via http://localhost:300/tea-time
     server.route({
