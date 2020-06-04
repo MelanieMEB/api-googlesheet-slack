@@ -17,10 +17,13 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest ./tests/*",
     "start": "node index.js"
   },
   "dependencies": {
     "@hapi/hapi": "^19.1.1"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1"
   }
 }
