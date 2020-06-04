@@ -1,7 +1,17 @@
 const Hapi = require('@hapi/hapi');   // Import de Hapi
 const port = process.env.PORT || 3000;
+require('dotenv').config();
 const teaService = require('./services/tea');
 const reponseSlackSerializer = require('./serializer/response-slack');
+
+function checkVerificationToken(request, h) {
+    const sendedVerificationToken = request.payload.token;
+    const expectedVerificationToken = process.env.VERIFICATION_TOKEN_SLACK;
+    if (sendedVerificationToken === expectedVerificationToken) {
+        return true;
+    }
+    return h.response('Seul notre application Slack a le droit d\'appeler cette route').code(401).takeover();
+};
 
 const init = async () => {
 
@@ -21,6 +31,9 @@ const init = async () => {
     server.route({
         method: 'POST',
         path: '/temps-infusion',
+        config: {
+            pre: [ { method: checkVerificationToken }]
+        },
         handler: (request, h) => {
             const teaColor = request.payload.text;
             const infusionTime = teaService.getInfusionTime(teaColor);
