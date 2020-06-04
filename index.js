@@ -1,18 +1,31 @@
 const Hapi = require('@hapi/hapi');   // Import de Hapi
 const port = process.env.PORT || 3000;
-const host = process.env.h
+const teaService = require('./services/tea');
+const reponseSlackSerializer = require('./serializer/response-slack');
 
 const init = async () => {
 
     // Initialisation d'un nouveau serveur Hapi avec sa configuration
     const server = Hapi.server({ port });
 
-    // Création d'une route GET, que l'on pourra appelé via http://localhost:300/tea-time
+    // Création d'une route GET, que l'on pourra appelé via http://localhost:300/temps-infusion
     server.route({
         method: 'GET',
         path: '/tea-time',
         handler: (request, h) => {
             return `Il est ${new Date().getHours()}h : c'est l'heure du thé !`;
+        }
+    });
+
+    // Création d'une route POST pour renvoyer un message à afficher sur Slack, que l'on pourra appelé via http://localhost:300/temps-infusion
+    server.route({
+        method: 'POST',
+        path: '/temps-infusion',
+        handler: (request, h) => {
+            const teaColor = request.payload.text;
+            const infusionTime = teaService.getInfusionTime(teaColor);
+            const message = `Le temps d'infusion pour un thé ${teaColor} est de ${infusionTime}.`
+            return reponseSlackSerializer.simpleResponse(message);
         }
     });
 
