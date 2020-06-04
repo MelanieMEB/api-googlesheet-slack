@@ -6,12 +6,19 @@ const init = async () => {
     // Initialisation d'un nouveau serveur Hapi avec sa configuration
     const server = Hapi.server({ port });
 
-    // Création d'une route GET, que l'on pourra appelé via http://localhost:300/tea-time
     server.route({
         method: 'GET',
-        path: '/tea-time',
+        path: '/',
         handler: (request, h) => {
-            return `Il est ${new Date().getHours()}h : c'est l'heure du thé !`;
+            return { server: 'OK' };
+        }
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/tips-a11y',
+        handler: (request, h) => {
+            return { text: 'OK' };
         }
     });
 
@@ -20,7 +27,7 @@ const init = async () => {
     console.log('Le serveur est lancé sur %s', server.info.uri);
 };
 
-// Gestion en cas d'erreur de l'Api
+// Gestion en cas d'erreur de l'API
 process.on('unhandledRejection', (err) => {
     console.log(err);
     process.exit(1);
