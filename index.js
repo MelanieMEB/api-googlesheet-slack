@@ -1,5 +1,7 @@
 const Hapi = require('@hapi/hapi');   // Import de Hapi
 const port = process.env.PORT || 3000;
+const responseSlackSerializer = require('./serializers/response-slack')
+const googleSheetService = require('./services/google-sheet')
 
 const init = async () => {
 
@@ -17,8 +19,9 @@ const init = async () => {
     server.route({
         method: 'POST',
         path: '/tips-a11y',
-        handler: (request, h) => {
-            return { text: 'OK' };
+        handler: async (request, h) => {
+            const tip = await googleSheetService.getA11YTip();
+            return responseSlackSerializer.createResponseForSlack(tip);
         }
     });
 
